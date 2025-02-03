@@ -3,6 +3,7 @@ import image from "../../assets/sofa-1.png"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toastify';
+import "./register.css"
 
 export default function Register() {
     const Redirect = useNavigate();
@@ -26,7 +27,6 @@ export default function Register() {
         e.preventDefault()
         // Email Validation
         const EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
         if(name === "") {
             setNameAlert(true)
             return
@@ -38,9 +38,6 @@ export default function Register() {
             return
         }else if (!EmailRegex.test(email)) {
             setValidEmailAlert(true)
-            return
-        }else if (EmailRegex.test(email)) {
-            setValidEmailAlert(false)
             return
         } else if (password === "") {
             setPasswordAlert(true)
@@ -62,7 +59,7 @@ export default function Register() {
             password: password
         }
         await axios.post(import.meta.env.VITE_API+"/register", formData)
-        .then(res=>{console.log(res)
+        .then(res=>{
             if(res.data.response === "success"){
                 toast.success(res.data.message)
                 setName("")
@@ -93,28 +90,28 @@ export default function Register() {
                         <p className="mt-2">Already have an Account? <Link className="text-[#38CB89]" to="/login">Login</Link></p>
                         <label className="mt-2">Your Name</label>
                         <br/>
-                        <input className="" type="text" value={name} onChange={(e)=>setName(e.target.value)} placeholder="Enter Your Name"  />
+                        <input className="w-full p-2" type="text" value={name} onChange={(e)=>setName(e.target.value)} placeholder="Enter Your Name"  />
                         {name !== "" ? "" : nameAlert && <p className="text-[#FF0000]">This field is Required</p>}
                         <br/>
                         <label className="mt-2">User Name</label>
                         <br/>
-                        <input type="text" value={username} onChange={(e)=>setUserName(e.target.value)} placeholder="Enter User Name"  />
+                        <input className="w-full p-2" type="text" value={username} onChange={(e)=>setUserName(e.target.value)} placeholder="Enter User Name"  />
                         {username !== "" ? "" : usernameAlert && <p className="text-[#FF0000]">This field is Required</p>}
                         <br/>
                         <label className="mt-2">Email Id</label>
                         <br/>
-                        <input type="text" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Enter Email Id"  />
+                        <input className="w-full p-2" type="text" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Enter Email Id"  />
                         {email !== "" ? "" : emailAlert && <p className="text-[#FF0000]">This field is Required</p>}
                         {validEmailAlert && <p className="text-[#FF0000]">Invalid Email</p>}
                         <br/>
                         <label className="mt-2">Pasword</label>
                         <br/>
-                        <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Enter Password"  />
+                        <input className="w-full p-2" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Enter Password"  />
                         {password !== "" ? "" : passwordAlert && <p className="text-[#FF0000]">This field is Required</p>}
                         <br/>
                         <label className="mt-2">Confirm Pasword</label>
                         <br/>
-                        <input type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} placeholder="Enter Confirm Password"  />
+                        <input className="w-full p-2" type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} placeholder="Enter Confirm Password"  />
                         {confirmPassword !== "" ? "" : confirmPasswordAlert && <p className="text-[#FF0000]">This field is Required</p>}
                         {password === confirmPassword ? "" : passworNotMatchAlert && <p className="text-[#FF0000]">Password not Match</p>}
                         <br/>

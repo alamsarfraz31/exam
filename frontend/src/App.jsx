@@ -12,14 +12,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Home Route */}
-          <Route path="/" element={<Home />} />
-
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
           {/* Page Error */}
           <Route path='*' element={<h1 className=''>404 Page Not Found</h1>} />
+          
         </Routes>
+
       </BrowserRouter>
     </>
   )
