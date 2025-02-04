@@ -1,6 +1,8 @@
 require("dotenv").config();
 const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
 const User = require("../model/userSchema");
+
 
 // Register Controller
 const Register = async (req, res) => {
@@ -55,11 +57,11 @@ const Login = async (req, res) => {
         }
 
         // Verify Password
-        const decyptPasword = CryptoJS.AES.decrypt(
+        const decryptPasword = CryptoJS.AES.decrypt(
             user.password,
             process.env.SECRETKEY
         );
-        const password = decyptPasword.toString(CryptoJS.enc.Utf8);
+        const password = decryptPasword.toString(CryptoJS.enc.Utf8);
         if (req.body.password !== password) {
             res.json({ message: "Invalid Username  or  Password", response: "Error" });
             return;
@@ -69,8 +71,6 @@ const Login = async (req, res) => {
             response: "success",
             token: await user.genrateToken(),
             userId: user._id.toString(),
-            name: user.name,
-            role: user.role,
         });
     } catch (error) {
         res.status(500).json("Internal  Server Error")
@@ -78,8 +78,30 @@ const Login = async (req, res) => {
   
 }
 
+// Single User Detail
+const SingelUserDetail = async (req, res) => {
+    try {
+        const user = jwt.verify(req.body.token, process.env.JWT_SECRETKEY, (error, result)=>{
+            if(error) {
+                return "token expire";
+            }
+            return result;
+        })
+
+        if(user === "token expire") {
+            res.json({message: "Token expire login again", response: "failed"})
+            return
+        }
+        
+        res.json({message:"Single User Data", response: "success", user})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 module.exports = {
     Register,
-    Login
+    Login,
+    SingelUserDetail,
 }

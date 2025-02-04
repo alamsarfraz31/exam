@@ -18,14 +18,16 @@ userSchema.methods.genrateToken = async function () {
     try {
         return jwt.sign({ 
             userId : this._id.toString(),
+            name: this.name,
+            user: this.username,
             email: this.email,
             role : this.role,
          },
             process.env.JWT_SECRETKEY,
-            {expiresIn: "5m"}
+            {expiresIn: "30s"}
         );
     } catch (error) {
-        
+        console.error(error)
     }
 }
 

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import image from "../../assets/sofa-1.png"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -10,12 +10,19 @@ import { isAction } from "@reduxjs/toolkit";
 
 
 export default function Login() {
+    const Redirect = useNavigate()
+    const session = localStorage.getItem("token")
     const dispatch = useDispatch();
-    const Redirect = useNavigate();
     const [username, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const [usernameAlert, setUserNameAlert] = useState(false)
     const [passwordAlert, setPasswordAlert] = useState(false)
+
+    useEffect(()=>{
+        if(session){
+            Redirect("/")
+        }
+    },[])
 
     const handleSubmit = async (e) => {
         e.preventDefault()

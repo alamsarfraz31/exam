@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import image from "../../assets/sofa-1.png"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -7,6 +7,7 @@ import "./register.css"
 
 export default function Register() {
     const Redirect = useNavigate();
+    const session = localStorage.getItem("token")
     const [name, setName] = useState("")
     const [username, setUserName] = useState("")
     const [email, setEmail] = useState("")
@@ -22,6 +23,12 @@ export default function Register() {
     const [passworNotConfirmdAlert, setPasswordNotConfirmAlert] = useState(false)
     const [passworNotMatchAlert, setPasswordNotMatchAlert] = useState(false)
     const [checkboxAlert, setCheckboxAlert] = useState(false)
+    
+    useEffect(()=>{
+            if(session){
+                Redirect("/")
+            }
+        },[])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
