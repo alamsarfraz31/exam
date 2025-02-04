@@ -46,7 +46,7 @@ export default function Login() {
                 setUserName("")
                 setPassword("")
                 setTimeout(()=>{
-                    Redirect("/")
+                    Redirect("/dashboard")
                 }, 5000)
                 return
             }

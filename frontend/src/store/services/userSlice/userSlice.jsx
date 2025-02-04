@@ -7,8 +7,10 @@ export const userSlice = createSlice({
         role: "",
     },
     reducers: {
-        login: (state, action)=>{
+        name: (state, action)=>{
             state.name = action.payload
+        },
+        role: (state, action)=>{
             state.role = action.payload
         }
     }

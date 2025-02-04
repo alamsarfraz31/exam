@@ -1,22 +1,24 @@
 import axios from "axios";
 import { useEffect, useLayoutEffect, useState,} from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Navbar() {
+    const dispatch = useDispatch()
     const session = localStorage.getItem("token")
     const [name, setName] = useState("")
-    const data = useSelector((state)=> state.user)
+    // const data = useSelector((state)=> state.user)
     // Get user data
     const Userdata = async ()=> {
         if(session) {
             await axios.post(import.meta.env.VITE_API+"/user", {token: session})
             .then(res=>{
                 console.log(res);
-                
                 if(res.data.response === "success") {
                 const user = res.data.user;
+                dispatch(name(user.name))
+                dispatch(role(user.role))
                 setName(user.name)
                 }
                 if(res.data.response === "failed") {
