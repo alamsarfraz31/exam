@@ -1,24 +1,29 @@
 import axios from "axios";
-import { useEffect, useLayoutEffect, useState,} from "react";
+import { useEffect, useState,} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { fetchUser } from "../../store/services/userSlice/userSlice";
 
 export default function Navbar() {
     const dispatch = useDispatch()
     const session = localStorage.getItem("token")
     const [name, setName] = useState("")
     // const data = useSelector((state)=> state.user)
+    // console.log(data);
+    
     // Get user data
     const Userdata = async ()=> {
         if(session) {
+            // const user = useSelector((state)=> state.user)
+            // setName(user.name);
+            // console.log(user);
+            
             await axios.post(import.meta.env.VITE_API+"/user", {token: session})
             .then(res=>{
-                console.log(res);
+                // console.log(res);
                 if(res.data.response === "success") {
                 const user = res.data.user;
-                dispatch(name(user.name))
-                dispatch(role(user.role))
                 setName(user.name)
                 }
                 if(res.data.response === "failed") {
