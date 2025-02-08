@@ -3,6 +3,9 @@ import Navbar from "../../component/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import AdminLayout from "../../component/AdminLayout/AdminLayout";
+import { ProgressSpinner } from 'primereact/progressspinner';
+import UserLayout from "../../component/UserLayout/UserLayout";
 
 export default function Dashboard() {
     const Redirect = useNavigate()
@@ -33,9 +36,9 @@ export default function Dashboard() {
         <>
             <Navbar />
             <h1>Dashboard</h1>
-            {isLoading && "Loading..."}
-            {role === "user" && <h1>Exam</h1>}
-            {role === "admin" && <h1>Exam Paper</h1>}
+            {isLoading && <ProgressSpinner />}
+            {role === "user" && <UserLayout />}
+            {role === "admin" && <AdminLayout />}
         </>
     )
 }

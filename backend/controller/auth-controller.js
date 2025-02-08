@@ -2,6 +2,9 @@ require("dotenv").config();
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userSchema");
+const Paper = require("../model/paperSchema");
+const Question = require("../model/qeustionSchema");
+const { response } = require("express");
 
 
 // Register Controller
@@ -95,8 +98,56 @@ const SingelUserDetail = async (req, res) => {
         
         res.json({message:"Single User Data", response: "success", user})
     } catch (error) {
+        res.json({message:"Server Internal Error", response: "failed", error})
+    }
+}
+
+// Add Paper controller
+const AddPaper = async (req, res) => {
+    try {
+        const questionPaper = {
+            paperName : req.body.paperName,
+            }
+
+        const paper = await Paper.create(questionPaper);
+        res.json({message: "Paper Added Successfully", response: "success"})
+    } catch (error) {
+        res.json({message:"Server Internal Error", response: "failed", error})
+    }
+}
+
+// Get Paper All Paper
+const GetPaper = async (req, res) => {
+    try {
+        const paper = await Paper.find()
+        if(!Paper) {
+            res.json({message: "Paper Not Found", response : "success"})
+        }
+
+        res.json({message:"Paper Found", response: "success", paper})
+    } catch (error) {
+        res.json({message:"Server Internal Error", response: "failed", error})
         console.log(error)
     }
+    
+}
+
+const AddQuestion = async (req, res) => {
+    try {
+        const question = {
+            title: req.body.title,
+            a : req.body.a,
+            b : req.body.b,
+            c : req.body.c,
+            d : req.body.d,
+            answer : req.body.answer,
+        }
+        await Question.create(question)
+        res.json({message: "Qeustion Added Successfully", response: "success"})
+    } catch (error) {
+        res.json({message: "Server Internal Error", response: 'failed', error})
+    }
+    
 }
 
 
@@ -104,4 +155,7 @@ module.exports = {
     Register,
     Login,
     SingelUserDetail,
+    AddPaper,
+    AddQuestion,
+    GetPaper,
 }

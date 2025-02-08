@@ -29,6 +29,9 @@ export default function Navbar() {
                 if(res.data.response === "failed") {
                     toast.error(res.data.message)
                     localStorage.removeItem("token")
+                    setTimeout(()=>{
+                        location.reload();
+                    },2000)
                 }
             })
         }

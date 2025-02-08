@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toastify';
 import "./register.css"
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 export default function Register() {
     const Redirect = useNavigate();
@@ -23,6 +24,7 @@ export default function Register() {
     const [passworNotConfirmdAlert, setPasswordNotConfirmAlert] = useState(false)
     const [passworNotMatchAlert, setPasswordNotMatchAlert] = useState(false)
     const [checkboxAlert, setCheckboxAlert] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     
     useEffect(()=>{
             if(session){
@@ -31,32 +33,41 @@ export default function Register() {
         },[])
 
     const handleSubmit = async (e) => {
+        setIsLoading(true)
         e.preventDefault()
         // Email Validation
         const EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         if(name === "") {
             setNameAlert(true)
+            setIsLoading(false)
             return
         } else if (username === "") {
             setUserNameAlert(true)
+            setIsLoading(false)
             return
         } else if (email === "") {
             setEmailAlert(true)
+            setIsLoading(false)
             return
         }else if (!EmailRegex.test(email)) {
             setValidEmailAlert(true)
+            setIsLoading(false)
             return
         } else if (password === "") {
             setPasswordAlert(true)
+            setIsLoading(false)
             return
         } else if (confirmPassword === "") {
             setConfirmPasswordAlert(true)
+            setIsLoading(false)
             return
         } else if (password !== confirmPassword) {
             setPasswordNotMatchAlert(true)
+            setIsLoading(false)
             return
         } else if (checkbox === false) {
             setCheckboxAlert(true)
+            setIsLoading(false)
             return
         } else {
         const formData = {
@@ -77,9 +88,11 @@ export default function Register() {
                 setTimeout(()=>{
                     Redirect("/login")
                 }, 5000)
+                setIsLoading(false)
                 return
             }
             toast.error(res.data.message)
+            setIsLoading(false)
         })
         }
         
@@ -126,6 +139,7 @@ export default function Register() {
                         {checkbox === true ? "" : checkboxAlert && <p className="text-[#FF0000]">Please Check the box</p>}
                         <p>I agree with <Link className="font-bold" to="#">Privacy Policy</Link> and <Link className="font-bold" to="#">Term of Use</Link></p>
                         <button className="mt-4 p-2 bg-black text-white w-full rounded" onClick={handleSubmit}>Sign Up</button>
+                        {isLoading && <ProgressSpinner />}
                     </div>
                 </div>
             </div>

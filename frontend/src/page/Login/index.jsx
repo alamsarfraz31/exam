@@ -7,6 +7,7 @@ import "./login.css"
 import { useDispatch } from "react-redux";
 import { login } from "../../store/services/userSlice/userSlice";
 import { isAction } from "@reduxjs/toolkit";
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 export default function Login() {
@@ -17,6 +18,7 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [usernameAlert, setUserNameAlert] = useState(false)
     const [passwordAlert, setPasswordAlert] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(()=>{
         if(session){
@@ -25,12 +27,15 @@ export default function Login() {
     },[])
 
     const handleSubmit = async (e) => {
+        setIsLoading(true)
         e.preventDefault()
         if (username === "") {
             setUserNameAlert(true)
+            setIsLoading(false)
             return
         } else if (password === "") {
             setPasswordAlert(true)
+            setIsLoading(false)
             return
         } else {
             
@@ -39,7 +44,8 @@ export default function Login() {
             password: password
         }
         await axios.post(import.meta.env.VITE_API+"/login", formData)
-        .then(res=>{console.log(res.data)
+        .then(res=>{
+            // console.log(res.data)
             if(res.data.response === "success") {
                 localStorage.setItem("token", res.data.token)
                 toast.success(res.data.message)
@@ -48,8 +54,10 @@ export default function Login() {
                 setTimeout(()=>{
                     Redirect("/dashboard")
                 }, 5000)
+                setIsLoading(false)
                 return
             }
+            setIsLoading(false)
         toast.error(res.data.message)}
         )
         }
@@ -78,6 +86,7 @@ export default function Login() {
                         {password !== "" ? "" : passwordAlert && <p className="text-[#FF0000]">This field is Required</p>}
                         <br/>
                         <button className="mt-4 p-2 bg-black text-white w-full rounded" onClick={handleSubmit}>Sign Up</button>
+                        {isLoading && <ProgressSpinner />}
                     </div>
                 </div>
             </div>

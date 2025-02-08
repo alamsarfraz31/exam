@@ -24,7 +24,7 @@ userSchema.methods.genrateToken = async function () {
             role : this.role,
          },
             process.env.JWT_SECRETKEY,
-            {expiresIn: "30s"}
+            {expiresIn: "15m"}
         );
     } catch (error) {
         console.error(error)
